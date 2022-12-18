@@ -50,7 +50,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	expTime := time.Now().Add(time.Minute * 1)
+	expTime := time.Now().Add(time.Minute * 30)
 	claims := &config.JWTClaim{
 		Username: user.Username,
 		RegisteredClaims: jwt.RegisteredClaims{

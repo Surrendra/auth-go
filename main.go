@@ -21,6 +21,7 @@ func main() {
 
 	api := r.PathPrefix("/api").Subrouter()
 	api.HandleFunc("/product", productcontroller.Index).Methods("GET")
+	api.HandleFunc("/product/{id}", productcontroller.Find).Methods("GET")
 	api.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))

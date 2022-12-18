@@ -15,6 +15,6 @@ func ConnectDatabase() {
 	if err != nil {
 		panic("Failed to create a connection to database")
 	}
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&User{}, &Product{})
 	DB = db
 }
