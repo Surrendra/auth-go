@@ -1,7 +1,9 @@
 package middlewares
 
 import (
+	"log"
 	"net/http"
+	"strings"
 
 	"github.com/Surrendra/auth-go/config"
 	"github.com/Surrendra/auth-go/helper"
@@ -13,13 +15,19 @@ func JWTMiddleware(next http.Handler) http.Handler {
 		c, err := r.Cookie("token")
 		if err != nil {
 			if err == http.ErrNoCookie {
-				response := map[string]string{
-					"message": "Anda tidak memiliki ijin",
-				}
-				helper.ResponseJson(w, http.StatusUnauthorized, response)
-				return
+				log.Println(err)
+				// response := map[string]string{
+				// 	"message": "Anda tidak memiliki ijin",
+				// }
+				// helper.ResponseJson(w, http.StatusUnauthorized, response)
+				// return
 			}
 		}
+
+		prefix := "Bearer "
+		authHeader := r.Header.Get("Authorization")
+		reqToken := strings.TrimPrefix(authHeader, prefix)
+		log.Println(reqToken)
 
 		tokenString := c.Value
 		claims := &config.JWTClaim{}

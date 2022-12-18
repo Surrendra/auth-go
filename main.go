@@ -23,6 +23,8 @@ func main() {
 	api.HandleFunc("/product", productcontroller.Index).Methods("GET")
 	api.HandleFunc("/product/{id}", productcontroller.Find).Methods("GET")
 	api.HandleFunc("/product/create", productcontroller.Create).Methods("POST")
+	api.HandleFunc("/product/update/{id}", productcontroller.Update).Methods("PUT")
+	api.HandleFunc("/product/delete/{id}", productcontroller.Delete).Methods("POST")
 	api.Use(middlewares.JWTMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
