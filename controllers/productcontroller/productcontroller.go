@@ -42,7 +42,6 @@ func Find(w http.ResponseWriter, r *http.Request) {
 		helper.ResponseJson(w, http.StatusNotFound, response)
 		return
 	}
-
 	jumlah := 12 * 30
 	response := map[string]interface{}{
 		"message":         "Success",
