@@ -5,6 +5,9 @@ import (
 	"net/http"
 
 	"github.com/Surrendra/auth-go/controllers/authcontroller"
+	"github.com/Surrendra/auth-go/controllers/productcontroller"
+	"github.com/Surrendra/auth-go/middlewares"
+
 	"github.com/Surrendra/auth-go/models"
 	"github.com/gorilla/mux"
 )
@@ -15,5 +18,10 @@ func main() {
 	r.HandleFunc("/login", authcontroller.Login).Methods("POST")
 	r.HandleFunc("/register", authcontroller.Register).Methods("POST")
 	r.HandleFunc("/logout", authcontroller.Logout).Methods("GET")
+
+	api := r.PathPrefix("/api").Subrouter()
+	api.HandleFunc("/product", productcontroller.Index).Methods("GET")
+	api.Use(middlewares.JWTMiddleware)
+
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
