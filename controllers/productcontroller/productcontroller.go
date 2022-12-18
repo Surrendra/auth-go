@@ -1,7 +1,9 @@
 package productcontroller
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -40,11 +42,35 @@ func Find(w http.ResponseWriter, r *http.Request) {
 		helper.ResponseJson(w, http.StatusNotFound, response)
 		return
 	}
+
 	jumlah := 12 * 30
 	response := map[string]interface{}{
 		"message":         "Success",
 		"data":            product,
 		"additional_data": jumlah,
+	}
+	helper.ResponseJson(w, http.StatusOK, response)
+}
+
+func Create(w http.ResponseWriter, r *http.Request) {
+	var product models.Product
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&product); err != nil {
+		log.Fatal("gagal melakukan decode request data")
+	}
+	defer r.Body.Close()
+	if err := models.DB.Create(&product).Error; err != nil {
+		log.Fatal("gagal mennyimpan data")
+		response := map[string]string{
+			"message": "Terjadi kesalahan ketika menyimpan data",
+		}
+		helper.ResponseJson(w, http.StatusInternalServerError, response)
+		return
+	}
+
+	response := map[string]interface{}{
+		"message": "Berhasil menyimpan data",
+		"data":    product,
 	}
 	helper.ResponseJson(w, http.StatusOK, response)
 }
