@@ -5,4 +5,5 @@ type User struct {
 	Name     string `gorm:"varchar(300)" json:"name"`
 	Username string `gorm:"varchar(300)" json:"username"`
 	Password string `gorm:"varchar(300)" json:"password"`
+	ApiToken string `gorm:"text" json:"api_token"`
 }
